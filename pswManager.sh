@@ -64,6 +64,13 @@ generate_key_hash() {
     echo -n "$key" | sha256sum | awk '{print $1}'
 }
 
+# Función para generar una contraseña aleatoria de mínimo 15 caracteres
+generate_random_password() {
+    # Generar una contraseña aleatoria de al menos 15 caracteres
+    tr -dc 'A-Za-z0-9_@#$%^&+=!' </dev/urandom | head -c 15
+    echo
+}
+
 # Función para inicializar la clave maestra
 initialize_master_key() {
     local stored_key_hash
@@ -110,8 +117,18 @@ add_password() {
     read -p "Usuario: " usuario
     read -p "Sitio: " sitio
     read -p "Nombre para la contraseña: " nombrepassword
-    read -s -p "Contraseña: " password
-    echo
+
+    # Preguntar si se desea generar una contraseña aleatoria o ingresar una manualmente
+    read -p "¿Desea generar una contraseña aleatoria? (s/n): " generar_aleatoria
+    if [[ "$generar_aleatoria" == "s" ]]; then
+        # Generar una contraseña aleatoria
+        password=$(generate_random_password)
+        echo "Contraseña generada: $password"
+    else
+        # Ingresar la contraseña manualmente
+        read -s -p "Contraseña: " password
+        echo
+    fi
 
     # Cifrar la contraseña con la clave maestra
     encrypt_password "$password" "$MASTER_KEY"

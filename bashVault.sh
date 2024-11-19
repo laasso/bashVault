@@ -126,12 +126,16 @@ add_password() {
     rm -f cipher.txt
 }
 
-# Función para obtener y descifrar una contraseña
-get_password() {
-    echo -e "${YELLOW}Nombre de la contraseña:${NC}"
-    read nombrepassword
+copy_to_clipboard() {
+    echo -n "$1" | xclip -selection clipboard
+}
 
-    encrypted_password=$(sqlite3 $DB "SELECT password FROM passwords WHERE nombrepassword='$nombrepassword';")
+get_password() {
+    list_passwords
+    echo -e "${YELLOW}ID de la contraseña:${NC}"
+    read idpassword
+
+    encrypted_password=$(sqlite3 $DB "SELECT password FROM passwords WHERE id='$idpassword';")
     if [ -z "$encrypted_password" ]; then
         echo -e "${RED}La contraseña no existe.${NC}"
         return
@@ -141,11 +145,45 @@ get_password() {
     decrypted_password=$(decrypt_password "cipher.txt" "$MASTER_KEY")
 
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Contraseña desencriptada: $decrypted_password${NC}"
+       echo -e " "
     else
         echo -e "${RED}Error: No se pudo desencriptar el archivo.${NC}"
+        rm -f cipher.txt
+        return
     fi
 
+    # Preguntar al usuario si desea ver o copiar la contraseña
+    echo -e "\n${YELLOW}¿Qué te gustaría hacer con la contraseña?${NC}"
+    echo "1. Ver la contraseña durante 10 segundos"
+    echo "2. Copiar la contraseña al portapapeles"
+    read -p "Seleccione una opción: " action
+
+    case $action in
+        1)
+            echo -e "${GREEN}La contraseña es: $decrypted_password${NC}"
+            echo "La contraseña se ocultará en 10 segundos..."
+            sleep 10
+            clear
+            ;;
+        2)
+            if copy_to_clipboard "$decrypted_password"; then
+                echo -e "${GREEN}Contraseña copiada al portapapeles.${NC}"
+                echo "La contraseña se borrará del portapapeles en 30 segundos..."
+                (sleep 30; copy_to_clipboard "") &
+            else
+                echo -e "${YELLOW}No se pudo copiar automáticamente. Aquí está la contraseña para copiar manualmente:${NC}"
+                echo -e "${GREEN}$decrypted_password${NC}"
+                echo "La contraseña se ocultará en 10 segundos..."
+                sleep 10
+                clear
+            fi
+            ;;
+        *)
+            echo -e "${RED}Opción inválida.${NC}"
+            ;;
+    esac
+
+    # Limpiar archivo temporal
     rm -f cipher.txt
 }
 
@@ -172,6 +210,16 @@ delete_password() {
     fi
 }
 
+end_message() {
+  echo -e "${GREEN}¡Hasta luego!${NC}"
+  echo -e "\n${RED}made by laasso & ikerm01${NC}"
+  echo -e "https://github.com/laasso/gestorPasswords"
+  echo -e "\n${YELLOW}Licencia MIT${NC}"
+  echo -e "Copyright (c) 2024 laasso & ikerm01"
+
+} 
+
+
 # Menú principal
 main_menu() {
     while true; do
@@ -190,7 +238,11 @@ main_menu() {
             2) get_password ;;
             3) list_passwords ;;
             4) delete_password ;;
-            5) echo -e "${GREEN}¡Hasta luego!${NC}"; exit 0 ;;
+            5) 
+                clear
+                end_message
+                exit 0
+                ;;
             *) echo -e "${RED}Opción inválida. Por favor, intente de nuevo.${NC}" ;;
         esac
     done

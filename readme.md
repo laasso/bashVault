@@ -64,6 +64,16 @@ Ejecuta el script:
 ./bashVault.sh
 ```
 
+## **Agregar a `.bashrc`**
+
+Para facilitar el acceso al script, crea un alias en tu archivo `.bashrc`:
+```bash
+echo 'alias bashVault="/ruta/al/script/bashVault.sh"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
 Al iniciarse por primera vez, se te pedirá que configures una **clave maestra**. Esta clave se usará para cifrar y descifrar las contraseñas almacenadas. **Recuerda esta clave, ya que no se puede recuperar.**
 
 ### **Menú principal**
@@ -150,16 +160,6 @@ Muestra un listado con los IDs y nombres de todas las contraseñas.
 
 ### **`delete_password`**  
 Elimina una entrada de la base de datos.
-
----
-
-## **Agregar a `.bashrc`**
-
-Para facilitar el acceso al script, crea un alias en tu archivo `.bashrc`:
-```bash
-echo 'alias bashVault="/ruta/al/script/bashVault.sh"' >> ~/.bashrc
-source ~/.bashrc
-```
 
 ---
 

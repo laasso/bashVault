@@ -54,6 +54,15 @@ Haz que el script sea ejecutable:
 chmod +x bashVault.sh
 ```
 
+## **Agregar a `.bashrc`**
+
+Para facilitar el acceso al script, crea un alias en tu archivo `.bashrc`:
+```bash
+echo 'alias bashVault="/ruta/al/script/bashVault.sh"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+
 ---
 
 ## **Uso**
@@ -63,15 +72,6 @@ Ejecuta el script:
 ```bash
 ./bashVault.sh
 ```
-
-## **Agregar a `.bashrc`**
-
-Para facilitar el acceso al script, crea un alias en tu archivo `.bashrc`:
-```bash
-echo 'alias bashVault="/ruta/al/script/bashVault.sh"' >> ~/.bashrc
-source ~/.bashrc
-```
-
 ---
 
 Al iniciarse por primera vez, se te pedirá que configures una **clave maestra**. Esta clave se usará para cifrar y descifrar las contraseñas almacenadas. **Recuerda esta clave, ya que no se puede recuperar.**

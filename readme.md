@@ -37,8 +37,8 @@ El script requiere los siguientes programas instalados en tu sistema:
 ### **1. Clonar el repositorio**
 Descarga el script desde GitHub:  
 ```bash
-git clone https://github.com/laasso/gestorPasswords.git
-cd gestorPasswords
+git clone https://github.com/laasso/bashVault.git
+cd bashVault
 ```
 
 ### **2. Instalar dependencias**
@@ -51,7 +51,7 @@ sudo apt install sqlite3 openssl xclip
 ### **3. Dar permisos al script**
 Haz que el script sea ejecutable:  
 ```bash
-chmod +x gestorPasswords.sh
+chmod +x bashVault.sh
 ```
 
 ---
@@ -61,7 +61,7 @@ chmod +x gestorPasswords.sh
 ### **Iniciar el gestor**
 Ejecuta el script:  
 ```bash
-./gestorPasswords.sh
+./bashVault.sh
 ```
 
 Al iniciarse por primera vez, se te pedirá que configures una **clave maestra**. Esta clave se usará para cifrar y descifrar las contraseñas almacenadas. **Recuerda esta clave, ya que no se puede recuperar.**
@@ -157,7 +157,7 @@ Elimina una entrada de la base de datos.
 
 Para facilitar el acceso al script, crea un alias en tu archivo `.bashrc`:
 ```bash
-echo 'alias gestorPasswords="/ruta/al/script/gestorPasswords.sh"' >> ~/.bashrc
+echo 'alias bashVault="/ruta/al/script/bashVault.sh"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
